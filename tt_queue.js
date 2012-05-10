@@ -508,15 +508,6 @@ function reserve(user_id){
 }
 
 function vote_promote(options){
-		var input_message = "";
-		if (!isNaN(index) && index <= my_queue.length && index > 0){
-			console.log(get_user_name(user_id, true) + ' can remove user at index '+index);
-			var removed_user_id = my_queue[index-1];
-			my_queue.splice(index-1, 1);
-			input_message += "Removed " + get_user_name(removed_user_id, false) + " from the queue :[";
-			deliver_chat(input_message);
-
-
 	var user_id = options['user_id'];
 	// can only be promoted if not a dj and there isn't any room on deck and if there are more than 1 people on waitlist.
 	if(is_mod(user_id)){
