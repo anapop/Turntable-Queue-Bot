@@ -150,7 +150,7 @@ function is_mod(user_id){
 }
 
 function queue_instructions(){
-	var input_message = "÷÷÷÷÷÷÷÷÷÷÷Commands÷÷÷÷÷÷÷÷÷÷÷ [] w? [] w+ [] w- [] w++ [] -plays [] -mods []";
+	var input_message = "÷÷÷÷÷÷÷÷÷÷÷Commands÷÷÷÷÷÷÷÷÷÷÷ | w? | w+ | w- | w++ | -plays | -mods |";
 	deliver_chat(input_message);
 }
 function deliver_chat(input_message){
