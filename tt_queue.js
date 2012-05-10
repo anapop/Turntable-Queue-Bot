@@ -183,7 +183,7 @@ function join_instructions(user_id){
 	if (visited_users.indexOf(user_id) == -1){
 		// for newcomers
 		visited_users.push(user_id);
-		var input_message = "Hey " + username + ", welcome to our room!  Please check our room info, or type -help";
+		var input_message = "Hey " + username + "! Check our room info or type -help";
 		deliver_chat(input_message);
 	}
 }
