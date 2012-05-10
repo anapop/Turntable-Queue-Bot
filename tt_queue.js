@@ -394,13 +394,13 @@ function remove_from_afk(user_id){
 
 function remove_dj(user_id, steal){
 	if (steal){
-		if (dj_steal_hash[user_id] == undefined || dj_steal_hash == 3){
+		if (dj_steal_hash[user_id] == undefined || dj_steal_hash == 10){
 			dj_steal_hash[user_id] = 1;
 		}
 		else{
 			dj_steal_hash[user_id] += 1;
 		}
-		if (dj_steal_hash[user_id] == 3){
+		if (dj_steal_hash[user_id] == 10){
 			// boot
 			boot(user_id);
 		}
@@ -474,7 +474,7 @@ function catch_add_dj(user_id){
 }
 
 function catch_rem_dj(user_id){
-	if (dj_steal_hash[user_id] == 3){
+	if (dj_steal_hash[user_id] == 10){
 		// this guy was removed because he was trying to steal an open spot. don't do anything
 		dj_steal_hash[user_id] = 0;
 	}
