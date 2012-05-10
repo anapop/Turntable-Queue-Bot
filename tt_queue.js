@@ -150,7 +150,7 @@ function is_mod(user_id){
 }
 
 function queue_instructions(){
-	var input_message = "÷÷÷÷÷÷÷÷÷÷÷Commands÷÷÷÷÷÷÷÷÷÷÷ [] w? [] w+ [] w- [] w++ [] -mods [] -plays [] -promote [] -pull [#] [] -remove [#] [][][][] [] -votekick [username] [][][][][][][][][][][][][][] Type -help [command] for more info on a command (ie. -help w?)";
+	var input_message = "÷÷÷÷÷÷÷÷÷÷÷Commands÷÷÷÷÷÷÷÷÷÷÷ [] w? [] w+ [] w- [] w++ [] -plays [] -remove [#]";
 	deliver_chat(input_message);
 }
 function deliver_chat(input_message){
