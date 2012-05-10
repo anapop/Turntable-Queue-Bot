@@ -602,7 +602,7 @@ function vote_stop(options){
 function process_vote(options){
 	var user_id = options['user_id'];
 	var choice = options['text'];
-	if(is_mod(user_id){
+	if(is_mod(user_id)){
 		if (room_vote_manager != {}){
 			// process vote if there is one going on
 			if (room_vote_manager["voters"].indexOf(user_id) == -1){
