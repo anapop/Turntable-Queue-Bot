@@ -28,7 +28,7 @@ var afk_djs = [];
 var my_queue = [];
 var countdown_ticks = 1;
 var room_vote_manager = {};
-var auto_banned = ["nam-kcap"];
+var auto_banned = ["nam-kcap","dj THE JESUS"];
 var countdown_interval_id = false;
 
 var user_hash = turntable[first_tt_obj]["users"];
