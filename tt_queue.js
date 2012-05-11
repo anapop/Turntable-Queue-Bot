@@ -509,26 +509,47 @@ function reserve(user_id){
 
 function vote_promote(options){
 	var user_id = options['user_id'];
-	// can only be promoted if not a dj and there isn't any room on deck and if there are more than 1 people on waitlist.
-	if(is_mod(user_id)){
+	// can only remove someone who is a dj
+	if (is_mod(user_id)){
 		var text = options['text'];
-		var index = text.substring(9, text.length);
-		if (is_dj(get_user_name(index, true)) == -1 && (dj_hash.length + my_queue.length > 5)){
-			if (room_vote_manager["type"] == undefined){
-				if (my_queue[0] == index){
-					var input_message = get_user_name(index, true) + " is already at the front of the line :]";
-				}
-				else{
-					room_vote_manager = {"type": "promote", "target": user_id, "yes": 0, "threshold": get_kick_threshold(), "voters": []};
-					var input_message = room_vote_manager["threshold"] + " more votes needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+		var index = text.substring(8, text.length);
+		var input_message = "";
+		if (!isNaN(index) && index <= my_queue.length && index > 0){
+			console.log(get_user_name(user_id, true) + ' can promote user at index '+index);
+//			var removed_user_id = my_queue[index-1];
+//			my_queue.splice(index-1, 1);
+			promote({"user_id": room_vote_manager["target"]});
+			var input_message = "Vote passed for " + get_user_name(room_vote_manager["target"], true) + "! ";
+			var queue_length = my_queue.length;
+			input_message += queue_length + " in line: ";
+			for (var a=0; a<my_queue.length; a++){
+				input_message += get_user_name(my_queue[a], false);
+				if (a != my_queue.length - 1){
+					input_message += ", ";
 				}
 			}
-			else{
-				show_existing_vote("promote");
-			}
+//			input_message += "Removed " + get_user_name(removed_user_id, false) + " from the queue :[";
 			deliver_chat(input_message);
 		}
 	}
+
+//	var user_id = options['user_id'];
+	// can only be promoted if not a dj and there isn't any room on deck and if there are more than 1 people on waitlist.
+//	if (is_dj(get_user_name(user_id, true)) == -1 && (dj_hash.length + my_queue.length > 5)){
+//		if (room_vote_manager["type"] == undefined){
+//			if (my_queue[0] == user_id){
+//				var input_message = get_user_name(user_id, true) + ", you are already at the front of the line :]";
+//			}
+//			else{
+//				room_vote_manager = {"type": "promote", "target": user_id, "yes": 0, "threshold": get_kick_threshold(), "voters": []};
+//				var input_message = room_vote_manager["threshold"] + " more votes needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+//			}
+//		}
+//		else{
+//			show_existing_vote("promote");
+//		}
+//		deliver_chat(input_message);
+//	}
 }
 
 function vote_remove(options){
