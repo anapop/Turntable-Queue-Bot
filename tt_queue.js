@@ -186,6 +186,11 @@ function join_instructions(user_id){
 		var input_message = "Hey " + username + "! Check our room info or type -help";
 		deliver_chat(input_message);
 	}
+	else
+	{
+		var input_message = "Welcome back " + username + "!";
+		deliver_chat(input_message);
+	}
 }
 
 function is_dj(username){
