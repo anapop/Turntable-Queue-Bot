@@ -186,11 +186,11 @@ function join_instructions(user_id){
 		var input_message = "Hey " + username + "! Check our room info or type -help";
 		deliver_chat(input_message);
 	}
-	else
-	{
-		var input_message = "Welcome back " + username + "!";
-		deliver_chat(input_message);
-	}
+    else
+    {
+        var input_message = "Welcome back " + username + "!";
+        deliver_chat(input_message);
+    }
 }
 
 function is_dj(username){
@@ -323,6 +323,23 @@ function add_to_queue(options){
 		}
 	}
 	deliver_chat(input_message);
+}
+
+function mod_remove_from_queue(options){
+	var user_id = options['user_id'];
+	// can only remove someone who is a dj
+	if (is_mod(user_id)){
+		var text = options['text'];
+		var index = text.substring(8, text.length);
+		var input_message = "";
+		if (!isNaN(index) && index <= my_queue.length && index > 0){
+			console.log(get_user_name(user_id, true) + ' can remove user at index '+index);
+			var removed_user_id = my_queue[index-1];
+			my_queue.splice(index-1, 1);
+			input_message += "Removed " + get_user_name(removed_user_id, false) + " from the queue :[";
+			deliver_chat(input_message);
+		}
+	}
 }
 
 function remove_from_queue(options){
@@ -495,66 +512,24 @@ function reserve(user_id){
 	// }
 }
 
-function mod_remove_from_queue(options){
-	var user_id = options['user_id'];
-	// can only remove someone who is a dj
-	if (is_mod(user_id)){
-		var text = options['text'];
-		var index = text.substring(8, text.length);
-		var input_message = "";
-		if (!isNaN(index) && index <= my_queue.length && index > 0){
-			console.log(get_user_name(user_id, true) + ' can remove user at index '+index);
-			var removed_user_id = my_queue[index-1];
-			my_queue.splice(index-1, 1);
-			input_message += "Removed " + get_user_name(removed_user_id, false) + " from the queue :[";
-			deliver_chat(input_message);
-		}
-	}
-}
-
 function vote_promote(options){
 	var user_id = options['user_id'];
-	// can only remove someone who is a dj
-	if (is_mod(user_id)){
-		var text = options['text'];
-		var index = text.substring(9, text.length);
-		var input_message = "";
-		if (!isNaN(index) && index <= my_queue.length && index > 0){
-			console.log(get_user_name(user_id, true) + ' can promote user at index '+index);
-//			var removed_user_id = my_queue[index-1];
-//			my_queue.splice(index-1, 1);
-			promote({"user_id": room_vote_manager["target"]});
-			var input_message = "Vote passed for " + get_user_name(room_vote_manager["target"], true) + "! ";
-			var queue_length = my_queue.length;
-			input_message += queue_length + " in line: ";
-			for (var a=0; a<my_queue.length; a++){
-				input_message += get_user_name(my_queue[a], false);
-				if (a != my_queue.length - 1){
-					input_message += ", ";
-				}
-			}
-//			input_message += "Removed " + get_user_name(removed_user_id, false) + " from the queue :[";
-			deliver_chat(input_message);
-		}
-	}
-
-//	var user_id = options['user_id'];
 	// can only be promoted if not a dj and there isn't any room on deck and if there are more than 1 people on waitlist.
-//	if (is_dj(get_user_name(user_id, true)) == -1 && (dj_hash.length + my_queue.length > 5)){
-//		if (room_vote_manager["type"] == undefined){
-//			if (my_queue[0] == user_id){
-//				var input_message = get_user_name(user_id, true) + ", you are already at the front of the line :]";
-//			}
-//			else{
-//				room_vote_manager = {"type": "promote", "target": user_id, "yes": 0, "threshold": get_kick_threshold(), "voters": []};
-//				var input_message = room_vote_manager["threshold"] + " more votes needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
-//			}
-//		}
-//		else{
-//			show_existing_vote("promote");
-//		}
-//		deliver_chat(input_message);
-//	}
+	if (is_dj(get_user_name(user_id, true)) == -1 && (dj_hash.length + my_queue.length > 5)){
+		if (room_vote_manager["type"] == undefined){
+			if (my_queue[0] == user_id){
+				var input_message = get_user_name(user_id, true) + ", you are already at the front of the line :]";
+			}
+			else{
+				room_vote_manager = {"type": "promote", "target": user_id, "yes": 0, "threshold": get_kick_threshold(), "voters": []};
+				var input_message = room_vote_manager["threshold"] + " more votes needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+			}
+		}
+		else{
+			show_existing_vote("promote");
+		}
+		deliver_chat(input_message);
+	}
 }
 
 function vote_remove(options){
@@ -628,55 +603,53 @@ function vote_stop(options){
 function process_vote(options){
 	var user_id = options['user_id'];
 	var choice = options['text'];
-	if(is_mod(user_id)){
-		if (room_vote_manager != {}){
-			// process vote if there is one going on
-			if (room_vote_manager["voters"].indexOf(user_id) == -1){
-				room_vote_manager["yes"] += 1;
-				room_vote_manager["voters"].push(user_id);
-				if (room_vote_manager["yes"] >= room_vote_manager["threshold"]){
-					if (room_vote_manager["type"] == "promote"){
-						promote({"user_id": room_vote_manager["target"]});
-						var input_message = "Vote passed for " + get_user_name(room_vote_manager["target"], true) + "! ";
-						var queue_length = my_queue.length;
-						input_message += queue_length + " in line: ";
-						for (var a=0; a<my_queue.length; a++){
-							input_message += get_user_name(my_queue[a], false);
-							if (a != my_queue.length - 1){
-								input_message += ", ";
-							}
+	if (room_vote_manager != {}){
+		// process vote if there is one going on
+		if (room_vote_manager["voters"].indexOf(user_id) == -1){
+			room_vote_manager["yes"] += 1;
+			room_vote_manager["voters"].push(user_id);
+			if (room_vote_manager["yes"] >= room_vote_manager["threshold"]){
+				if (room_vote_manager["type"] == "promote"){
+					promote({"user_id": room_vote_manager["target"]});
+					var input_message = "Vote passed for " + get_user_name(room_vote_manager["target"], true) + "! ";
+					var queue_length = my_queue.length;
+					input_message += queue_length + " in line: ";
+					for (var a=0; a<my_queue.length; a++){
+						input_message += get_user_name(my_queue[a], false);
+						if (a != my_queue.length - 1){
+							input_message += ", ";
 						}
 					}
-					else if (room_vote_manager["type"] == "kick"){
-						username = get_user_name(room_vote_manager["target"], true);
-						boot(room_vote_manager["target"]);
-						var input_message = "Votekick passed for " + username + "!";
-					}
-					else if (room_vote_manager["type"] == "remove"){
-						username = get_user_name(room_vote_manager["target"], true);
-						remove_dj(room_vote_manager["target"], false);
-						var input_message = "Removing " + username + " :[";
-					}
-					room_vote_manager = {};
 				}
-				else{
-					var votes_left = room_vote_manager["threshold"] - room_vote_manager["yes"];
-					if (room_vote_manager["type"] == "promote"){
-						var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
-					}
-					else if (room_vote_manager["type"] == "kick"){
-						var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
-					}
-					else if (room_vote_manager["type"] == "remove"){
-						var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
-					}
+				else if (room_vote_manager["type"] == "kick"){
+					username = get_user_name(room_vote_manager["target"], true);
+					boot(room_vote_manager["target"]);
+					var input_message = "Votekick passed for " + username + "!";
 				}
-				deliver_chat(input_message);
+				else if (room_vote_manager["type"] == "remove"){
+					username = get_user_name(room_vote_manager["target"], true);
+					remove_dj(room_vote_manager["target"], false);
+					var input_message = "Removing " + username + " :[";
+				}
+				room_vote_manager = {};
 			}
+			else{
+				var votes_left = room_vote_manager["threshold"] - room_vote_manager["yes"];
+				if (room_vote_manager["type"] == "promote"){
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+				}
+				else if (room_vote_manager["type"] == "kick"){
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
+				}
+				else if (room_vote_manager["type"] == "remove"){
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
+				}
+			}
+			deliver_chat(input_message);
 		}
-		else{
-			
-		}
+	}
+	else{
+		
 	}
 }
 
@@ -840,12 +813,10 @@ function get_active_users(){
 function get_kick_threshold(){
 	var active_users_count = get_active_users().length;
 	if (active_users_count <= 5){
-		return 1;
-//		return 3;
+		return 3;
 	}
 	else{
-		return 1;
-//		return parseInt(0.5*active_users_count);
+		return parseInt(0.5*active_users_count);
 	}
 }
 
