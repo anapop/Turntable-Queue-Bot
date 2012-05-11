@@ -28,7 +28,7 @@ var afk_djs = [];
 var my_queue = [];
 var countdown_ticks = 1;
 var room_vote_manager = {};
-var auto_banned = [];
+var auto_banned = ["nam-kcap"];
 var countdown_interval_id = false;
 
 var user_hash = turntable[first_tt_obj]["users"];
@@ -517,7 +517,7 @@ function vote_promote(options){
 	// can only remove someone who is a dj
 	if (is_mod(user_id)){
 		var text = options['text'];
-		var index = text.substring(8, text.length);
+		var index = text.substring(9, text.length);
 		var input_message = "";
 		if (!isNaN(index) && index <= my_queue.length && index > 0){
 			console.log(get_user_name(user_id, true) + ' can promote user at index '+index);
