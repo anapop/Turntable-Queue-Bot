@@ -636,7 +636,8 @@ function process_vote(options){
 			else{
 				var votes_left = room_vote_manager["threshold"] - room_vote_manager["yes"];
 				if (room_vote_manager["type"] == "promote"){
-					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
+					var input_message = votes_left + " mod vote (type -yes) needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line. ";
 				}
 				else if (room_vote_manager["type"] == "kick"){
 					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
