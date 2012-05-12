@@ -812,12 +812,13 @@ function get_active_users(){
 
 function get_kick_threshold(){
 	var active_users_count = get_active_users().length;
-	if (active_users_count <= 5){
-		return 3;
-	}
-	else{
-		return parseInt(0.5*active_users_count);
-	}
+	return 1;
+//	if (active_users_count <= 5){
+//		return 1;
+//	}
+//	else{
+//		return parseInt(0.5*active_users_count);
+//	}
 }
 
 function rickroll(options){
