@@ -266,7 +266,7 @@ function get_user_name(user_id, strict){
 	if (strict == true){
 		if(user_hash[user_id]["name"].substring(0, 1) == '@' {
 			return user_hash[user_id]["name"];		
-		} else
+		} else {
 			return "@"+user_hash[user_id]["name"];		
 		}
 	}
