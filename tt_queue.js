@@ -188,7 +188,7 @@ function join_instructions(user_id){
 	}
     else
     {
-        var input_message = "Welcome back " + username + "!";
+        var input_message = "Welcome back, " + username + "!";
         deliver_chat(input_message);
     }
 }
