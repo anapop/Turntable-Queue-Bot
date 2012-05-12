@@ -382,7 +382,7 @@ function remove_from_queue(options){
 		if (index != -1){
 			my_queue.splice(index, 1);
 		}
-		var input_message = "Removed " + username + " from the waitlist for leaving the room for more than 15 minutes :[";
+		var input_message = "Removed " + username + " from the waitlist for leaving the room for more than 5 minutes :[";
 		deliver_chat(input_message);
 	}
 }
@@ -681,7 +681,7 @@ function temp_user_hash_leave_timer(){
 	for (var user_id in temp_user_hash){
 		var leave_time = temp_user_hash[user_id]["leave_time"];
 		if (leave_time != 0){
-			if (current_time - leave_time > 900000){
+			if (current_time - leave_time > 300000){
 				// remove this user from queue and temp hash
 				remove_from_queue({"user_id": user_id, "type": "deregister"});
 				delete temp_user_hash[user_id];
