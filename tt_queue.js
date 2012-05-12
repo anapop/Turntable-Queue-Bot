@@ -640,11 +640,11 @@ function process_vote(options){
 					var input_message = votes_left + " mod vote (type -yes) needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line. ";
 				}
 				else if (room_vote_manager["type"] == "kick"){
-					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
-				}
+//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
+					var input_message = votes_left + " mod vote (type -yes) needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.";				}
 				else if (room_vote_manager["type"] == "remove"){
-					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
-				}
+//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
+					var input_message = votes_left + " mod vote (type -yes) needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.";				}
 			}
 			deliver_chat(input_message);
 		}
