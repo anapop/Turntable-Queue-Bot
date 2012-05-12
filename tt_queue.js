@@ -264,18 +264,18 @@ function get_user_id(username, strict){
 
 function get_user_name(user_id, strict){
 	if (strict == true){
-		if(user_hash[user_id]["name"][0]=="@" {
+//		if(user_hash[user_id]["name"][0]=="@" {
 			return user_hash[user_id]["name"];		
-		} else
-			return "@"+user_hash[user_id]["name"];		
-		}
+//		} else
+//			return "@"+user_hash[user_id]["name"];		
+//		}
 	}
 	else{
-		if(user_hash[user_id]["name"][0]=="@" {
+//		if(user_hash[user_id]["name"][0]=="@" {
 			return temp_user_hash[user_id]["name"];		
-		} else {
-			return "@"+temp_user_hash[user_id]["name"];		
-		}
+//		} else {
+//			return "@"+temp_user_hash[user_id]["name"];		
+//		}
 	}
 }
 
