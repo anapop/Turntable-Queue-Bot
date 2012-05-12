@@ -264,10 +264,18 @@ function get_user_id(username, strict){
 
 function get_user_name(user_id, strict){
 	if (strict == true){
-		return "@"+user_hash[user_id]["name"];		
+		if(user_hash[user_id]["name"].startsWith("@") {
+			return user_hash[user_id]["name"];		
+		} else
+			return "@"+user_hash[user_id]["name"];		
+		}
 	}
 	else{
-		return "@"+temp_user_hash[user_id]["name"];		
+		if(user_hash[user_id]["name"].startsWith("@") {
+			return temp_user_hash[user_id]["name"];		
+		} else {
+			return "@"+temp_user_hash[user_id]["name"];		
+		}
 	}
 }
 
