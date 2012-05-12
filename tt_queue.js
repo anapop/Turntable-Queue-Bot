@@ -603,7 +603,7 @@ function vote_stop(options){
 function process_vote(options){
 	var user_id = options['user_id'];
 	var choice = options['text'];
-	if (room_vote_manager != {}){
+	if (room_vote_manager != {} && is_mod(user_id)){
 		// process vote if there is one going on
 		if (room_vote_manager["voters"].indexOf(user_id) == -1){
 			room_vote_manager["yes"] += 1;
