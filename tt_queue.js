@@ -28,7 +28,7 @@ var afk_djs = [];
 var my_queue = [];
 var countdown_ticks = 1;
 var room_vote_manager = {};
-var auto_banned = ["nam-kcap","dj THE JESUS"];
+var auto_banned = [];
 var countdown_interval_id = false;
 
 var user_hash = turntable[first_tt_obj]["users"];
@@ -186,11 +186,6 @@ function join_instructions(user_id){
 		var input_message = "Hey " + username + "! Check our room info or type -help";
 		deliver_chat(input_message);
 	}
-    else
-    {
-        var input_message = "Welcome back, " + username + "!";
-        deliver_chat(input_message);
-    }
 }
 
 function is_dj(username){
@@ -264,18 +259,10 @@ function get_user_id(username, strict){
 
 function get_user_name(user_id, strict){
 	if (strict == true){
-		if(user_hash[user_id]["name"].substring(0, 1) == '@') {
-			return user_hash[user_id]["name"];		
-		} else {
-			return "@"+user_hash[user_id]["name"];		
-		}
+		return user_hash[user_id]["name"];		
 	}
 	else{
-		if(user_hash[user_id]["name"].substring(0, 1) == '@') {
-			return temp_user_hash[user_id]["name"];		
-		} else {
-			return "@"+temp_user_hash[user_id]["name"];		
-		}
+		return temp_user_hash[user_id]["name"];		
 	}
 }
 
@@ -611,7 +598,7 @@ function vote_stop(options){
 function process_vote(options){
 	var user_id = options['user_id'];
 	var choice = options['text'];
-	if (room_vote_manager != {} && is_mod(user_id)){
+	if (room_vote_manager != {}){
 		// process vote if there is one going on
 		if (room_vote_manager["voters"].indexOf(user_id) == -1){
 			room_vote_manager["yes"] += 1;
@@ -644,15 +631,14 @@ function process_vote(options){
 			else{
 				var votes_left = room_vote_manager["threshold"] - room_vote_manager["yes"];
 				if (room_vote_manager["type"] == "promote"){
-//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
-					var input_message = votes_left + " mod vote (type -yes) needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line. ";
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to promote " + get_user_name(room_vote_manager["target"], true) + " to front of the line.  Type -yes to vote :]";
 				}
 				else if (room_vote_manager["type"] == "kick"){
-//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
-					var input_message = votes_left + " mod vote (type -yes) needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.";				}
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to kick " + get_user_name(room_vote_manager["target"], true) + " from the room.  Type -yes to vote :]";
+				}
 				else if (room_vote_manager["type"] == "remove"){
-//					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
-					var input_message = votes_left + " mod vote (type -yes) needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.";				}
+					var input_message = votes_left + " more "+ (votes_left == 1 ? "vote" : "votes") + " needed to remove " + get_user_name(room_vote_manager["target"], true) + " from the decks.  Type -yes to vote :]";
+				}
 			}
 			deliver_chat(input_message);
 		}
@@ -821,13 +807,12 @@ function get_active_users(){
 
 function get_kick_threshold(){
 	var active_users_count = get_active_users().length;
-	return 1;
-//	if (active_users_count <= 5){
-//		return 1;
-//	}
-//	else{
-//		return parseInt(0.5*active_users_count);
-//	}
+	if (active_users_count <= 5){
+		return 3;
+	}
+	else{
+		return parseInt(0.5*active_users_count);
+	}
 }
 
 function rickroll(options){
